@@ -1,26 +1,18 @@
-# [MSA ③-2] 완성 — order-service 원격 호출을 FeignClient로
+# ✅ 과제 HW10 정답 예시
 
 | 항목 | 내용 |
 | --- | --- |
-| 브랜치 | `lectures/msa/step6-done` (구현 후 · 완성 코드) |
-| 강의일 | Day 7 · 11/26 (목) |
-| 이동 | 이전: `lectures/msa/step6` |
+| 브랜치 | `homework/infra-1-solution` |
+| 과제 | `homework/infra-1` 브랜치 README |
 
-> **브랜치 규칙** — `stepN` = 구현 **전** 출발 코드, `stepN-done` = 구현 **후** 완성 코드.
-> 수업은 `stepN`에서 시작하고, 막히면 언제든 `stepN-done`으로 체크아웃해 다음 단계에 합류하세요.
-> ```bash
-> git fetch origin && git checkout lectures/msa/step6-done
-> ```
+> 정답은 하나가 아닙니다. 이 브랜치는 **검증 테스트를 통과하는 한 가지 방법**입니다.
+> 본인 코드와 비교할 때는 `git diff homework/infra-1 homework/infra-1-solution` 로 무엇이 바뀌었는지부터 보세요.
 
-## 이 브랜치에서 달라진 것
+## 바뀐 것
 
-- `order-service`: `ProductFeignClient`, `PaymentFeignClient` 추가, 기존 RestClient 설정(`OrderClientConfig`, `ProductHttpClient`) 제거
-- `@EnableFeignClients` 적용 (`OrderServiceApplication`)
+- 서비스 4개 Dockerfile 추가 (10개 완성)
+- `docker-compose.yml` — `x-client` 앵커로 반복 제거, config · discovery 에 `/dev/tcp` 포트 healthcheck, `condition: service_healthy`
 
-> `cart-service`는 아직 RestClient(`ProductHttpClient`)입니다 — **과제 8**에서 전환합니다.
+## 확인
 
-## 📝 과제와의 관계
-
-이 브랜치는 **과제 8 (cart-service Feign 전환)**의 비교 기준(정답 예시)입니다. 과제 내용은 `lectures/msa/step6` 브랜치 README를 확인하세요.
-
-> 다음 MSA ④ (Kafka · Saga · Outbox) 브랜치는 준비 중입니다.
+과제 브랜치의 완료 기준 명령을 그대로 실행하면 모두 통과합니다.
