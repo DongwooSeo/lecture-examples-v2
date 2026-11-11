@@ -1,4 +1,41 @@
-# [Day 1 사전 과제] 도메인 분석 과제
+# Spring AI와 MSA를 활용한 백엔드 개발 9기 — 강의 예제 코드
+
+하나의 이커머스 모놀리식(상품·장바구니·결제·주문·유저·셀러)을 **DDD로 정리 → 정산 배치 추가 → MSA로 분리 → 검색·AI로 확장**해 가는 강의 예제 레포입니다.
+수업은 평일 **14:00~19:00 (온라인)**, 오전에는 **전날 받은 과제**를 진행합니다 (마감 13:30).
+
+> **브랜치 규칙** — `lectures/<주제>/stepN` = 구현 **전** 출발 코드, `stepN-done` = 구현 **후** 완성 코드.
+> 각 브랜치의 README에 그 단계의 목표 · 실행 방법 · 과제가 정리돼 있습니다.
+
+## 📅 브랜치 로드맵
+
+| 강의일 | 과목 | 브랜치 | 다음 날 오전 과제 |
+| --- | --- | --- | --- |
+| 11/17 (화) | DDD ① 전략적 설계 | `lectures/ddd/step2` | 나머지 도메인 연관관계 끊기 |
+| 11/18 (수) | DDD ② 전술적 설계 | `lectures/ddd/step3` | 장바구니 애그리거트 불변식 + 단위 테스트 |
+| 11/19 (목) | DDD ③ 4계층 · 도메인 간 소통 | `lectures/ddd/step4`, `lectures/ddd/step5` | 나머지 도메인 4계층 + 공통 응답 / (주말) 팀 컨텍스트 맵 |
+| 11/23 (월) | 정산 ① 왜 배치인가 · Chunk · 재시작 | `lectures/settlement/step1` ~ `step3` | 70% 실패 재시작 테스트 + chunk 크기 측정 |
+| 11/24 (화) | 정산 ② 멀티스레드 함정 · Partitioning | `lectures/settlement/step4` | 측정표 + **멀티 모듈 분리 (`lectures/msa/step1`)** |
+| 11/25 (수) | MSA ② Eureka · Gateway · Config | `lectures/msa/step2` ~ `step4` | 3종을 7개 서비스 전체에 적용 |
+| 11/26 (목) | MSA ③ Resilience4j · OpenFeign | `lectures/msa/step5`, `lectures/msa/step6` | cart-service Feign 전환 + 실패 3케이스 재현 |
+| 11/27 (금) | MSA ④ Kafka · Saga · Outbox | _(브랜치 준비 중)_ | (주말) 주문↔결제 Saga |
+| 11/30 ~ 12/01 | 쿠버네티스 기반 CI/CD | _(브랜치 준비 중)_ | Dockerfile · Compose · CI |
+| 12/02 (수) | 검색 ② Elasticsearch | `lectures/elasticsearch/step1` | 검색 챌린지 [기본] / (주말) Outbox |
+| 12/07 (월) | AI ② 검색 파이프라인에 AI 통합 | `lectures/ai/step1` | 검증 세트 비교표 + RAG 질문 준비 |
+| 12/08 ~ 12/10 | AI ③④ RAG · SSE · LLM 운영 | _(브랜치 준비 중)_ | — |
+
+> 정산 브랜치는 DDD 완성 코드 위에, MSA 브랜치는 정산 완성 코드 위에, 검색·AI 브랜치는 MSA 완성 코드 위에 이어집니다.
+> 즉 **하나의 프로젝트가 끝까지 자라는 구조**입니다.
+
+## 🛠 공통 실행 환경
+
+- JDK 21+, Gradle Wrapper 포함 (`./gradlew`)
+- DB: 인메모리 H2 (모놀리식 단계) — H2 콘솔 `http://localhost:8080/h2-console`
+- MSA 이후: 서비스별 포트 (order 8080 · product 8081 · payment 8082 · user 8083 · seller 8084 · cart 8085 · settlement 8086 · gateway 8000 · discovery 8761 · config 8888)
+- 검색·AI 이후: Docker Desktop, Ollama (네이티브 설치)
+
+---
+
+# 📝 [Day 1 사전 과제] 도메인 분석 과제 (마감 11/17 (화) 14:00)
 
 > Day 1 DDD 강의에 앞서, **앞으로 고도화해 나갈 프로젝트의 도메인을 직접 분석**해보는 사전 과제입니다. 
 > 이 과제의 목적은 정답을 맞히는 것이 아니라, 현재 코드가 어떤 방식으로 서로 얽혀 있는지 스스로 파악하고 체감해보는 것입니다. 
@@ -121,6 +158,8 @@ Entity 간의 연관관계를 **[draw.io](https://app.diagrams.net/)** 로 다�
 ## 📮 제출 안내
 
 ### 👉 제출은 아래 구글 폼으로 받습니다
+
+> ⚠️ 아래 폼 링크는 7기 것입니다. 9기 폼으로 교체해 주세요.
 
 ### **[📝 사전 과제 제출하기 (Google Form)](https://docs.google.com/forms/d/e/1FAIpQLSexj6GrUcdo92huwJLHpjPLVHi5ymdxCf1HPLmFvTV1AMBn_Q/viewform)**
 
