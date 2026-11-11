@@ -31,11 +31,10 @@
 ./gradlew bootRun   # orders.http 실행
 ```
 
+
 ## 📝 과제와의 관계
 
-이 브랜치는 **과제 2 (장바구니 애그리거트 + 불변식 테스트)**의 비교 기준(정답 예시)입니다. 과제 내용은 `lectures/ddd/step3` 브랜치 README를 확인하세요.
-
-> 장바구니 애그리거트와 단위 테스트의 예시는 `lectures/ddd/step4-done`의 `cart/domain`, `*Test.java`에 있습니다.
+**과제 HW02** (`homework/ddd-2`)의 정답 예시는 `homework/ddd-2-solution` 브랜치에 있습니다.
 
 
 다음 수업은 `lectures/ddd/step4`에서 시작합니다.
