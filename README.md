@@ -1,135 +1,55 @@
-# [Day 1 사전 과제] 도메인 분석 과제
+# [AI ②] 완성 — AI 색인 파이프라인 + 하이브리드 검색
 
-> Day 1 DDD 강의에 앞서, **앞으로 고도화해 나갈 프로젝트의 도메인을 직접 분석**해보는 사전 과제입니다. 
-> 이 과제의 목적은 정답을 맞히는 것이 아니라, 현재 코드가 어떤 방식으로 서로 얽혀 있는지 스스로 파악하고 체감해보는 것입니다. 
-> 강의 시간에는 이러한 얽힌 연관관계를 하나씩 분리해 나가며, 도메인 경계를 세우는 과정을 함께 살펴볼 예정입니다.
-
-> (중요) 아직 설계에 익숙하지 않으신 분은 해당 과제가 어려울 수 있습니다. 전혀 걱정하지 않으셔도 됩니다, 강의 때 같이 진행해보고 그래도 이해가 안 가신다면 강의 이후 개인적으로 봐드리겠습니다. 
----
-
-## 📦 분석 대상 도메인
-
-현재 프로젝트는 **하나의 모놀리식 프로젝트**에 아래 6개 도메인이 섞여 있습니다.
-
-| 도메인 | 주요 Entity |
+| 항목 | 내용 |
 | --- | --- |
-| 유저 (User) | `User` |
-| 셀러 (Seller) | `Seller` |
-| 상품 (Product) | `Product` |
-| 장바구니 (Cart) | `Cart`, `CartItem` |
-| 주문 (Order) | `Order`, `OrderItem` |
-| 결제 (Payment) | `Payment` |
+| 브랜치 | `lectures/ai/step1-done` (구현 후 · 완성 코드) |
+| 강의일 | Day 13 · 12/07 (월) |
+| 이동 | 이전: `lectures/ai/step1` |
 
-각 Entity는 다음 경로에 있습니다.
+> **브랜치 규칙** — `stepN` = 구현 **전** 출발 코드, `stepN-done` = 구현 **후** 완성 코드.
+> 수업은 `stepN`에서 시작하고, 막히면 언제든 `stepN-done`으로 체크아웃해 다음 단계에 합류하세요.
+> ```bash
+> git fetch origin && git checkout lectures/ai/step1-done
+> ```
 
+## 이 브랜치에서 달라진 것
+
+| 구성 | 위치 | 설명 |
+| --- | --- | --- |
+| AI 설정 | `product-service/src/main/resources/application.yml` | `spring.ai.model.chat/embedding` 스위치, Ollama · OpenAI |
+| 속성 추출 | `infrastructure/ai/ProductEnrichService`, `ProductAttributes` | Structured Output + 임베딩 |
+| 검색 의도 | `infrastructure/ai/SearchIntent` | 검색어 구조화용 타입 |
+| Port | `application/port/ProductIndexPort`, `ProductSearchPort` | DIP |
+| 어댑터 | `infrastructure/search/ProductIndexAdapter`, `ProductSearchAdapter` | dense_vector 색인, kNN, RRF |
+| API | `ProductSearchController` | `/products/search`, `/semantic`, `/hybrid` |
+
+```http
+GET http://localhost:8081/products/search?keyword=하객룩 원피스
+GET http://localhost:8081/products/search/semantic?keyword=하객룩 원피스
+GET http://localhost:8081/products/search/hybrid?keyword=하객룩 원피스
+GET http://localhost:8081/products/search/hybrid?keyword=MX Master 3S
 ```
-src/main/java/com/growmighty/lectures/firstday/tangledmonolith/
-├── user/User.java
-├── seller/Seller.java
-├── product/Product.java
-├── cart/Cart.java
-├── cart/CartItem.java
-├── order/Order.java
-├── order/OrderItem.java
-└── payment/Payment.java
-```
 
----
+> OpenAI로 전환할 때 API 키는 환경변수 `OPENAI_API_KEY`로만 — **절대 커밋 금지**.
 
-## ✏️ 과제 1. 도메인 연관관계 다이어그램 그리기 (draw.io)
+## 📝 과제 10 — 검색 방식 비교 보고서 + RAG 준비 (마감 12/08 (화) 13:30)
 
-### 무엇을 하나요?
+**필수**
 
-현재 구현된 **Entity 코드(특히 JPA 연관관계 어노테이션)를 직접 읽고**,
-Entity 간의 연관관계를 **[draw.io](https://app.diagrams.net/)** 로 다이어그램으로 표현해주세요.
+- [ ] 검증 세트 5개(정확 매칭 2 · 서술형 2 · 신조어 1)를 정하고 keyword / semantic / hybrid로 실행
+- [ ] 상위 3개 결과를 비교표로 정리 — **하이브리드가 오히려 불리한 케이스**를 1개 이상 찾아 이유 분석
+- [ ] 내일 RAG 쇼핑 컨시어지에 던질 **사용자 질문 10개** 준비 (예: "결혼식 하객으로 입을 10만원대 원피스 추천해줘")
 
-### 어떻게 그리나요? (예시)
+**도전**
 
-아래는 **다른 도메인의 예시**입니다. 우리 프로젝트와 모양은 다르지만, **이런 식으로** 그려주시면 됩니다.
+- [ ] `SearchIntent`를 실제 검색에 연결 — LLM으로 검색어를 구조화해 kNN filter를 정밀화하고, 추가 지연(ms)과 비용을 측정
 
-- 각 Entity를 **네모 박스**로 그리고, 한글명과 영문 클래스명을 함께 적기 (예: `주문 (Order)`)
-- Entity 사이를 **선으로 연결**하고, 그 선 위에 연관관계 종류를 표기
-  - `@OneToOne`, `@OneToMany`, `@ManyToOne`, `@ManyToMany`
-- **방향(누가 누구를 참조하는지)** 과 **다중성(1, N)** 을 화살표 / 까치발 표기로 드러내기
+### 제출 방법 (공통)
 
-> 💡 예시 이미지처럼 "박스 + 연결선 + 연관관계 어노테이션 라벨" 형태면 충분합니다.
-> 디자인보다 **연관관계를 정확히 읽어내는 것**이 중요합니다.
+1. 이 레포를 **fork** 한 뒤, 본인 fork에 `hw/ai-1` 브랜치를 만들어 작업합니다.
+2. 마감 전까지 **본인 fork의 브랜치 링크**(또는 PR 링크)를 과제 제출 채널에 올립니다.
+3. 다음 날 14:00 수업은 **과제 리뷰 15분**으로 시작합니다. 2~3명의 코드를 `-done` 브랜치와 나란히 비교합니다.
 
-<img width="853" height="592" alt="스크린샷 2026-06-26 오전 10 50 15" src="https://github.com/user-attachments/assets/9f0b997b-6bdd-4456-8665-474fed3bef6a" />
+> 막히면 `lectures/ai/step1-done` 브랜치와 `git diff`로 비교해 봐도 괜찮습니다. 단, **왜 그렇게 바뀌었는지 설명할 수 있어야** 합니다.
 
-> ⚠️ 위 이미지는 **참고용 예시**이며, 우리 프로젝트의 실제 도메인과는 다릅니다. 실제 코드를 보고 직접 그려주세요.
-
-### 분석 시 꼭 확인할 포인트
-
-코드를 읽을 때 아래를 단서로 삼으세요.
-
-- 필드에 붙은 `@OneToOne` / `@OneToMany` / `@ManyToOne` 어노테이션
-- `@JoinColumn(name = "...")` → **외래키(FK)를 누가 들고 있는지**
-- `mappedBy = "..."` → **양방향 관계인지, 연관관계의 주인이 누구인지**
-- `cascade`, `orphanRemoval`, `fetch` 옵션 → **함께 묶여 움직이는 객체 묶음(힌트!)**
-
-### 제출물
-
-- draw.io 다이어그램 파일(`.drawio`) **또는** 내보낸 이미지(`.png` / `.jpg`)
-
----
-
-## ✏️ 과제 2. 현재 코드의 문제점 서술하기 (주관식)
-
-### 무엇을 하나요?
-
-과제 1에서 그린 다이어그램을 보면서,
-**"지금 이 코드, 이대로 괜찮을까?"** 를 스스로 질문해보고 자유롭게 서술해주세요.
-
-> 정답은 없습니다. **느낀 점, 불편한 점, 위험해 보이는 점**을 솔직하게 적어주세요.
-> 수업에서 다룰 내용을 미리 고민해보는 것이 목적입니다.
-
-### 이런 관점에서 생각해보세요 (가이드 질문)
-
-아래 질문은 **생각을 돕기 위한 힌트**일 뿐, 전부 답할 필요는 없습니다.
-
-1. **연관관계의 방향과 결합도**
-   - 한 Entity가 다른 도메인의 Entity를 **객체로 직접 참조**하고 있나요?
-   - 예를 들어 `OrderItem`이 `Product`를 직접 들고 있을 때, 어떤 문제가 생길 수 있을까요?
-   - 한 도메인을 수정하면 다른 도메인까지 영향을 받게 되지는 않나요?
-
-2. **도메인 경계**
-   - 지금 6개 도메인은 서로 **명확히 구분**되어 있나요, 아니면 **거미줄처럼 얽혀** 있나요?
-   - "이 객체는 어느 도메인의 것인가?"를 명확히 말할 수 있나요?
-
-3. **데이터 정합성 / 변경에 대한 취약성**
-   - `OrderItem`이 `Product`를 참조하는데, **주문 이후 상품 가격이 바뀌면** 어떻게 될까요?
-   - 주문 당시의 정보는 어떻게 보존되어야 할까요?
-
-4. **객체로 직접 참조 vs ID로 간접 참조**
-   - 지금처럼 객체로 직접 참조하는 방식의 **장점과 단점**은 무엇일까요?
-   - 만약 도메인을 나중에 **별도 서비스로 분리**한다면 어떤 문제가 생길까요?
-
-5. **(선택) 비즈니스 로직의 위치**
-   - 도메인 규칙(재고 차감, 금액 계산 등)은 지금 **어디에** 작성되어 있나요?
-   - Entity는 단순히 데이터만 담는 그릇 역할만 하고 있지는 않나요?
-   
-6. **(선택) 이외에 코드 수정이 필요하다고 느끼는 부분을 자유롭게 서술해주세요!** 
-
-### 제출물
-
-- 자유 형식 문서 (`.md`, `.txt`, `.docx`, `.pdf` 등 무엇이든 OK)
-- 분량 제한 없음 — **3~5개 문제점**을 골라 각각 2~3줄씩만 적어도 충분합니다.
-
----
-
-## 📮 제출 안내
-
-### 👉 제출은 아래 구글 폼으로 받습니다
-
-### **[📝 사전 과제 제출하기 (Google Form)](https://docs.google.com/forms/d/e/1FAIpQLSexj6GrUcdo92huwJLHpjPLVHi5ymdxCf1HPLmFvTV1AMBn_Q/viewform)**
-
-- **제출 기한**: Day 1 수업 시작 전까지
-- **제출물 2종** (폼에서 한 번에 제출)
-  1. 도메인 연관관계 다이어그램 (draw.io 파일 또는 이미지) → **파일 업로드**
-  2. 코드 문제점 서술 → **폼에 직접 작성** (또는 문서 파일 업로드)
-- ⚠️ 파일 업로드를 위해 **구글 계정 로그인**이 필요합니다.
-- 완벽하지 않아도 됩니다. **직접 코드를 읽고 고민한 흔적**이 가장 중요합니다. 💪
-
-> 이 과제에서 느낀 "얽힘"과 "불편함"을, 수업에서 **하나씩 끊어내며 해결**해 나갈 예정입니다.
-> 가벼운 마음으로, 그러나 진지하게 코드를 들여다봐 주세요!
+> 다음 AI ③ (RAG · SSE 스트리밍) 브랜치는 준비 중입니다.
