@@ -51,7 +51,7 @@ POST http://localhost:8080/settlements/naive?limit=100000
 POST http://localhost:8080/settlements/naive          # limit 없음 = findAll → OOM
 ```
 
-## 📝 사전 과제 — OOM 직접 재현하기 (마감 11/23 (월) 13:30)
+## 📝 과제 HW04 ③ — OOM 직접 재현하기 (마감 11/23 (월) 13:30)
 
 > 수업 전에 **직접 터뜨려 보고** 오면, 오후의 Chunk 처리가 왜 필요한지 몸으로 이해됩니다.
 
