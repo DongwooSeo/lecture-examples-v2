@@ -47,6 +47,10 @@ public class Order {
     @Column(nullable = false)
     private OrderStatus status;
 
+    /** [과제 MSA-Saga] 같은 요청의 재시도를 막기 위한 멱등 키. 같은 키로는 주문이 하나만 생긴다. */
+    @Column(unique = true)
+    private String idempotencyKey;
+
     private Order(Long userId, List<OrderItem> items) {
         validateItems(items);
         items.forEach(this::addOrderItem);
@@ -57,6 +61,12 @@ public class Order {
 
     public static Order create(Long userId, List<OrderItem> items) {
         return new Order(userId, items);
+    }
+
+    public static Order create(Long userId, List<OrderItem> items, String idempotencyKey) {
+        Order order = new Order(userId, items);
+        order.idempotencyKey = idempotencyKey;
+        return order;
     }
 
     private void validateItems(List<OrderItem> items) {

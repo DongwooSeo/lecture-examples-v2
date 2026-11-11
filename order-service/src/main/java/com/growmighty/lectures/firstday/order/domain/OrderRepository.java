@@ -8,6 +8,9 @@ public interface OrderRepository {
 
     Optional<Order> findById(Long id);
 
+    /** [과제 MSA-Saga] 멱등 키로 이미 만들어진 주문을 찾는다. */
+    Optional<Order> findByIdempotencyKey(String idempotencyKey);
+
     List<Order> findAll();
 
     /** 페이지 단위 조회 (정산 데모에서 "조금씩 읽기"에 사용) */

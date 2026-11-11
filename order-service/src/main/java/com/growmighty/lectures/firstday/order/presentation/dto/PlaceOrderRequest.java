@@ -14,9 +14,13 @@ public record PlaceOrderRequest(
     }
 
     public PlaceOrderCommand toCommand() {
+        return toCommand(null);
+    }
+
+    public PlaceOrderCommand toCommand(String idempotencyKey) {
         List<OrderLine> lines = requests.stream()
                 .map(r -> new OrderLine(r.productId(), r.quantity()))
                 .toList();
-        return new PlaceOrderCommand(userId, lines);
+        return new PlaceOrderCommand(userId, lines, idempotencyKey);
     }
 }

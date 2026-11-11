@@ -25,6 +25,11 @@ public class OrderRepositoryAdapter implements OrderRepository {
     }
 
     @Override
+    public Optional<Order> findByIdempotencyKey(String idempotencyKey) {
+        return jpaRepository.findByIdempotencyKey(idempotencyKey);
+    }
+
+    @Override
     public List<Order> findAll() {
         return jpaRepository.findAll();
     }

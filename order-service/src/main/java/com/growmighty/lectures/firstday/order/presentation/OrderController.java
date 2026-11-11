@@ -28,8 +28,10 @@ public class OrderController {
     }
 
     @PostMapping
-    public ApiResponse<OrderResponse> placeOrder(@RequestBody PlaceOrderRequest request) {
-        return ApiResponse.ok(OrderResponse.from(orderApiService.placeOrder(request.toCommand())));
+    public ApiResponse<OrderResponse> placeOrder(
+            @RequestHeader(value = "Idempotency-Key", required = false) String idempotencyKey,
+            @RequestBody PlaceOrderRequest request) {
+        return ApiResponse.ok(OrderResponse.from(orderApiService.placeOrder(request.toCommand(idempotencyKey))));
     }
 
     @PostMapping("/{orderId}/cancel")
