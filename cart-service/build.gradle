@@ -11,6 +11,9 @@ dependencies {
 
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 
+    // [과제 MSA-2] 선언적 HTTP 클라이언트 (로드밸런서 포함)
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
     runtimeOnly 'com.h2database:h2'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'

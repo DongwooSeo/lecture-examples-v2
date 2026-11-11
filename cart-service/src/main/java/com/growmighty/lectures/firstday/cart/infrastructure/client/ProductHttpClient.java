@@ -7,16 +7,14 @@ import com.growmighty.lectures.firstday.cart.infrastructure.client.dto.ProductAp
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClient;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class ProductHttpClient implements ProductPort {
 
-    private final RestClient productRestClient;
+    private final ProductFeignClient productFeignClient;   // RestClient → Feign, 갈아 끼운 건 이 줄뿐
     private final CircuitBreakerFactory circuitBreakerFactory;
 
     @Override
@@ -27,12 +25,7 @@ public class ProductHttpClient implements ProductPort {
     }
 
     private ProductSnapshot callGetProduct(Long productId) {
-        ApiResponseBody<ProductApiData> body = productRestClient.get()
-            .uri("/products/{productId}", productId)
-            .retrieve()
-            .body(new ParameterizedTypeReference<>() {
-            });
-
+        ApiResponseBody<ProductApiData> body = productFeignClient.fetchProduct(productId);
         ProductApiData data = body.data();
         return new ProductSnapshot(data.id(), data.orderable());
     }
