@@ -12,7 +12,7 @@ public class PaymentService {
 
     public Payment pay(BigDecimal totalAmount) {
         Payment payment = Payment.ready(totalAmount);
-        payment.changeStatus(PaymentStatus.PAID);
+        payment.approve();
         paymentRepository.save(payment);
         return payment;
     }

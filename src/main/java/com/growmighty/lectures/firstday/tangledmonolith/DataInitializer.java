@@ -1,7 +1,6 @@
 package com.growmighty.lectures.firstday.tangledmonolith;
 
 import com.growmighty.lectures.firstday.tangledmonolith.cart.Cart;
-import com.growmighty.lectures.firstday.tangledmonolith.cart.CartItem;
 import com.growmighty.lectures.firstday.tangledmonolith.cart.CartRepository;
 import com.growmighty.lectures.firstday.tangledmonolith.product.Product;
 import com.growmighty.lectures.firstday.tangledmonolith.product.ProductRepository;
@@ -39,8 +38,8 @@ public class DataInitializer implements CommandLineRunner {
                 Product.create(seller.getId(), "원목 4인용 식탁", BigDecimal.valueOf(259000), 5, "북유럽 스타일 원목 식탁"));
 
         Cart cart = Cart.create(buyer.getId());
-        cart.addItem(CartItem.create(chair.getId(), 2));
-        cart.addItem(CartItem.create(table.getId(), 1));
+        cart.addItem(chair.getId(), 2);
+        cart.addItem(table.getId(), 1);
         cartRepository.save(cart);
 
         System.out.printf(
