@@ -27,9 +27,10 @@
 ./gradlew :order-service:bootRun      # 4. 서비스들
 ```
 
+
 ## 📝 과제와의 관계
 
-이 브랜치는 **과제 7 (Spring Cloud 3종 전체 적용)**의 비교 기준(정답 예시)입니다. 과제 내용은 `lectures/msa/step4` 브랜치 README를 확인하세요.
+이 브랜치는 **과제 HW07** (`homework/msa-1`)의 정답 예시입니다. 과제 브랜치의 검증 테스트가 이 코드에서 통과합니다.
 
 
 다음 수업은 `lectures/msa/step5`에서 시작합니다.
