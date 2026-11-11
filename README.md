@@ -17,10 +17,17 @@
 - `order-service`: `ProductFeignClient`, `PaymentFeignClient` 추가, 기존 RestClient 설정(`OrderClientConfig`, `ProductHttpClient`) 제거
 - `@EnableFeignClients` 적용 (`OrderServiceApplication`)
 
-> `cart-service`는 아직 RestClient(`ProductHttpClient`)입니다 — **과제 8**에서 전환합니다.
+> `cart-service`는 아직 RestClient(`ProductHttpClient`)입니다 — **과제 HW08** 에서 전환합니다.
+
 
 ## 📝 과제와의 관계
 
-이 브랜치는 **과제 8 (cart-service Feign 전환)**의 비교 기준(정답 예시)입니다. 과제 내용은 `lectures/msa/step6` 브랜치 README를 확인하세요.
+**과제 HW08** (`homework/msa-2`)의 정답 예시는 `homework/msa-2-solution` 브랜치에 있습니다.
 
-> 다음 MSA ④ (Kafka · Saga · Outbox) 브랜치는 준비 중입니다.
+## 다음 수업 — MSA ④ Kafka · Saga · Outbox (11/27)
+
+이 브랜치 위에서 진행합니다. 수업 뒤 주말 과제는 **HW09 ⭐ 주문 생성 Saga** 입니다.
+
+```bash
+git checkout homework/msa-saga     # 멱등 키 배관 + OrderSagaTest + Kafka compose 가 준비된 시작 브랜치
+```
