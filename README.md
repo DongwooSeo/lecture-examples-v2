@@ -1,9 +1,9 @@
-# [MSA 예열] 모놀리식을 멀티 모듈로 쪼개기 — 오전 과제 브랜치
+# [MSA ①] 왜 MSA인가 — 정산까지 완성된 모놀리식
 
 | 항목 | 내용 |
 | --- | --- |
 | 브랜치 | `lectures/msa/step1` (구현 전 · 출발 코드) |
-| 강의일 | 11/25 (수) 오전 과제 → 14:00 MSA ② 시작 전 |
+| 강의일 | Day 5 · 11/24 (화) 18:00~19:00 |
 | 이동 | 이전: `lectures/settlement/step4-done` · 다음: `lectures/msa/step1-done` |
 
 > **브랜치 규칙** — `stepN` = 구현 **전** 출발 코드, `stepN-done` = 구현 **후** 완성 코드.
@@ -14,46 +14,31 @@
 
 ## 이 브랜치는?
 
-정산까지 완성된 **하나의 모놀리식**입니다. 오늘 오후 MSA 수업은 이 프로젝트가 **서비스별 모듈로 나뉜 상태**에서 시작합니다.
-멀티 모듈 전환은 기계적인 작업이 많아, 라이브 대신 **오전 과제**로 진행합니다.
+DDD → 정산까지 완성된 **하나의 모놀리식**입니다. MSA ① 시간에는 코드를 고치지 않고, 이 프로젝트를 놓고 이야기합니다.
 
-> 11/24 (화) 18:00 MSA ① "왜 MSA인가" 시간에 전체 방향을 함께 보고 시작합니다.
+- 모놀리식의 성장통: 배포 병목, 장애 전파, 팀 확장의 한계
+- MSA 가 해결하는 것과 새로 떠안는 것 — 트레이드오프
+- 전환의 전제 조건: **도메인 경계(DDD)가 먼저다** — 지난주에 끊어 둔 경계가 그대로 서비스 경계가 됩니다
 
-## 📝 과제 6-B — 멀티 모듈 분리 (마감 11/25 (수) 13:30)
-
-**목표 구조**
+목표 구조 (`lectures/msa/step1-done`):
 
 ```
-settings.gradle
-common/              ← ApiResponse, 공통 예외 등 공용 코드 (실행 X)
-product-service/     :8081
-payment-service/     :8082
-user-service/        :8083
-seller-service/      :8084
-cart-service/        :8085
-settlement-service/  :8086
+common/              ← ApiResponse, 공통 예외
+product-service/     :8081      payment-service/  :8082
+user-service/        :8083      seller-service/   :8084
+cart-service/        :8085      settlement-service/ :8086
 order-service/       :8080
 ```
 
-**필수**
+## 📝 오늘의 과제 (내일 오전)
 
-- [ ] 루트 `settings.gradle`에 `common` + 서비스 7개 모듈 등록
-- [ ] 도메인 패키지를 해당 모듈로 이동, 각 모듈에 `*ServiceApplication` 메인 클래스와 포트 설정
-- [ ] **각 서비스는 자기 DB만** 사용 (H2를 서비스별로 분리)
-- [ ] 다른 도메인 호출은 DDD Step 5의 **API 호출(Port + HttpClient)** 방식으로 — 직접 빈 호출 금지
-- [ ] 7개 서비스가 각자 기동되고, `order-service`로 주문 생성이 성공
+| 과제 | 마감 | 시작 브랜치 | 검증 |
+| --- | --- | --- | --- |
+| **HW06-B** 멀티 모듈 분리 — product · payment · order 이관 | 11/25 (수) 13:30 | `homework/msa-0` | 브랜치 README 의 완료 기준 |
 
-**도전**
+과제 내용 · 완료 기준 · 제출 방법은 **시작 브랜치의 README** 에 있습니다.
+```bash
+git fetch origin && git checkout homework/msa-0
+```
 
-- [ ] 모듈 간 순환 의존이 없는지 `./gradlew :order-service:dependencies`로 확인
-- [ ] 기존 테스트를 각 모듈로 옮겨 `./gradlew test` 통과
-
-**힌트**: DDD 4계층 + Port 구조를 제대로 지켰다면, 패키지 단위로 그대로 들어 옮기면 됩니다. 옮기기 어려운 곳이 있다면 그곳이 **경계가 새는 곳**입니다.
-
-### 제출 방법 (공통)
-
-1. 이 레포를 **fork** 한 뒤, 본인 fork에 `hw/msa-0` 브랜치를 만들어 작업합니다.
-2. 마감 전까지 **본인 fork의 브랜치 링크**(또는 PR 링크)를 과제 제출 채널에 올립니다.
-3. 다음 날 14:00 수업은 **과제 리뷰 15분**으로 시작합니다. 2~3명의 코드를 `-done` 브랜치와 나란히 비교합니다.
-
-> 막히면 `lectures/msa/step1-done` 브랜치와 `git diff`로 비교해 봐도 괜찮습니다. 단, **왜 그렇게 바뀌었는지 설명할 수 있어야** 합니다.
+> 분량을 줄이려고 user · seller · cart · settlement 4개는 미리 옮겨 두었습니다. product · payment · order 3개를 직접 옮깁니다.
