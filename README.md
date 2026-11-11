@@ -38,11 +38,10 @@ docker start lecture-es
 curl -X POST localhost:8081/products/search/internal/reindex   # 복구
 ```
 
+
 ## 📝 과제와의 관계
 
-이 브랜치는 **과제 9-A**의 비교 기준(정답 예시)입니다. 과제 내용은 `lectures/elasticsearch/step1` 브랜치 README를 확인하세요.
-
-> 과제 9-B(Outbox)는 이 브랜치 위에서 직접 구현하는 과제라, 정답 브랜치는 따로 없습니다.
-
+- **HW12** (검색 챌린지 [기본])는 이 브랜치에서 시작합니다. 정답 브랜치는 없고 14:00 리뷰에서 함께 봅니다.
+- **HW14** ⭐ Outbox 는 `homework/search-outbox` 에서 시작하고, 정답 예시는 `homework/search-outbox-solution` 에 있습니다.
 
 다음 수업은 `lectures/ai/step1`에서 시작합니다.
