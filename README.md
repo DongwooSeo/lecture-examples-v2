@@ -36,28 +36,22 @@ cd infrastructure && docker compose up -d --build   # ES 9200, Kibana 5601
 curl localhost:9200/_cat/plugins                     # analysis-nori 확인
 ```
 
-## 📝 과제 9 — 두 개 (마감이 다릅니다)
+## 📝 오늘의 과제 — 두 개 (마감이 다릅니다)
 
-### 9-A. 검색 챌린지 [기본] (마감 12/03 (목) 13:30)
+### HW12. 검색 챌린지 [기본] + Ollama 준비 (마감 12/03 (목) 13:30)
 
 - [ ] `ProductSearchResponse` 응답 DTO 분리 (Document를 그대로 노출하지 않기)
 - [ ] Gateway에서 `/products/search/internal/**` 외부 접근 차단
 - [ ] 동의어 사전(`elasticsearch/product-settings.json`)에 본인이 정한 상품 도메인 단어 5개 추가 → 검색으로 확인
 - [ ] **AI 수업 사전 준비**: Ollama 네이티브 설치, `ollama pull exaone3.5:2.4b`, `ollama pull bge-m3`, `ollama list` 캡처
 
-### 9-B. ⭐ Transactional Outbox로 유실 원천 차단 (마감 12/07 (월) 13:30, 주말 포함)
+### HW14. ⭐ Transactional Outbox 로 유실 원천 차단 (마감 12/07 (월) 13:30, 주말 포함)
 
-> MSA ④에서 배운 Outbox를 **실제로 구현**하는 자리입니다.
+시작 브랜치 `homework/search-outbox` 의 README 를 진행하세요. 검증 테스트(`ProductOutboxRecoveryTest`)가 준비돼 있습니다.
 
-- [ ] `product_outbox` 테이블 — 상품 변경과 **같은 트랜잭션**에 이벤트 저장
-- [ ] `@Scheduled` 폴러가 미처리 이벤트를 ES에 색인하고 처리 마킹
-- [ ] 장애 실험을 다시: ES 중단 → 상품 등록 → ES 재기동 → **재색인 API 없이** 검색에 나타나는지 검증 (영상 또는 캡처)
-
-**도전 (택1 이상)**
-
-- [ ] [정합성] 상품 삭제/판매종료 시 색인 처리 — delete vs filter 비교
-- [ ] [운영] alias 기반 무중단 재색인 (`products_v2` → `_aliases` 원자적 스위치)
-- [ ] [검색 품질] aggregation 가격대 패싯, `search_after` 페이지네이션
+```bash
+git fetch origin && git checkout homework/search-outbox
+```
 
 ### 제출 방법 (공통)
 
