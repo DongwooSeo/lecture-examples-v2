@@ -3,11 +3,11 @@ package com.growmighty.lectures.firstday.product.application;
 import com.growmighty.lectures.firstday.common.exception.EntityNotFoundException;
 import com.growmighty.lectures.firstday.product.application.dto.ProductInfo;
 import com.growmighty.lectures.firstday.product.application.dto.RegisterProductCommand;
-import com.growmighty.lectures.firstday.product.domain.event.ProductChangedEvent;
 import com.growmighty.lectures.firstday.product.domain.Product;
 import com.growmighty.lectures.firstday.product.domain.ProductRepository;
+import com.growmighty.lectures.firstday.product.domain.outbox.ProductOutbox;
+import com.growmighty.lectures.firstday.product.domain.outbox.ProductOutboxRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,14 +17,15 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
-    private final ApplicationEventPublisher eventPublisher;   // ★ 추가
+    // 이벤트 발행(AFTER_COMMIT) 대신 Outbox 기록 — 상품 변경과 같은 트랜잭션에 남는다
+    private final ProductOutboxRepository outboxRepository;
 
     @Transactional
     public ProductInfo register(RegisterProductCommand command) {
         Product product = Product.register(
             command.sellerId(), command.name(), command.price(), command.stockQuantity(), command.description());
         ProductInfo info = ProductInfo.from(productRepository.save(product));
-        eventPublisher.publishEvent(new ProductChangedEvent(info.id()));   // ★
+        outboxRepository.save(ProductOutbox.pending(info.id()));
         return info;
     }
 
@@ -32,20 +33,20 @@ public class ProductService {
     public ProductInfo changePrice(Long productId, BigDecimal newPrice) {
         Product product = getProductEntity(productId);
         product.changePrice(newPrice);
-        eventPublisher.publishEvent(new ProductChangedEvent(productId));   // ★
+        outboxRepository.save(ProductOutbox.pending(productId));
         return ProductInfo.from(product);
     }
 
     @Transactional
     public void decreaseStock(Long productId, int quantity) {
         getProductEntity(productId).decreaseStock(quantity);
-        eventPublisher.publishEvent(new ProductChangedEvent(productId));   // ★
+        outboxRepository.save(ProductOutbox.pending(productId));
     }
 
     @Transactional
     public void restoreStock(Long productId, int quantity) {
         getProductEntity(productId).restoreStock(quantity);
-        eventPublisher.publishEvent(new ProductChangedEvent(productId));   // ★
+        outboxRepository.save(ProductOutbox.pending(productId));
     }
 
     @Transactional(readOnly = true)
