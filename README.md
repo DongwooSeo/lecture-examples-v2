@@ -32,7 +32,7 @@ GET http://localhost:8081/products/search/hybrid?keyword=MX Master 3S
 
 > OpenAI로 전환할 때 API 키는 환경변수 `OPENAI_API_KEY`로만 — **절대 커밋 금지**.
 
-## 📝 과제 10 — 검색 방식 비교 보고서 + RAG 준비 (마감 12/08 (화) 13:30)
+## 📝 과제 HW15 — 검색 방식 비교 보고서 + RAG 준비 (마감 12/08 (화) 13:30)
 
 **필수**
 
@@ -40,7 +40,7 @@ GET http://localhost:8081/products/search/hybrid?keyword=MX Master 3S
 - [ ] 상위 3개 결과를 비교표로 정리 — **하이브리드가 오히려 불리한 케이스**를 1개 이상 찾아 이유 분석
 - [ ] 내일 RAG 쇼핑 컨시어지에 던질 **사용자 질문 10개** 준비 (예: "결혼식 하객으로 입을 10만원대 원피스 추천해줘")
 
-**도전**
+**도전 (12/09 평가 대비일 오전에 이어서 해도 됩니다 — HW16)**
 
 - [ ] `SearchIntent`를 실제 검색에 연결 — LLM으로 검색어를 구조화해 kNN filter를 정밀화하고, 추가 지연(ms)과 비용을 측정
 
@@ -52,4 +52,4 @@ GET http://localhost:8081/products/search/hybrid?keyword=MX Master 3S
 
 > 막히면 `lectures/ai/step1-done` 브랜치와 `git diff`로 비교해 봐도 괜찮습니다. 단, **왜 그렇게 바뀌었는지 설명할 수 있어야** 합니다.
 
-> 다음 AI ③ (RAG · SSE 스트리밍) 브랜치는 준비 중입니다.
+> 다음 AI ③ (RAG · SSE 스트리밍) 수업은 `lectures/ai/step2` 에서 시작합니다.
