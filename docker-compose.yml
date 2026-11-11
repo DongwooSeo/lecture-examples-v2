@@ -1,6 +1,6 @@
-# MSA 전체를 "파일 하나"로 띄운다.
+# MSA 전체를 "파일 하나"로 띄운다. (과제 INFRA-1 정답 예시)
 #
-#   ./gradlew bootJar          # 모든 모듈 jar 빌드
+#   ./gradlew bootJar
 #   docker compose up -d --build
 #   curl http://localhost:8000/products/1   # Gateway 경유
 #
@@ -12,51 +12,83 @@ x-client-env: &client-env
   # config-repo 의 Eureka 주소(localhost:8761)를 덮어쓴다. SPRING_APPLICATION_JSON 은 원격 설정보다 우선한다.
   SPRING_APPLICATION_JSON: '{"eureka":{"client":{"service-url":{"defaultZone":"http://discovery-server:8761/eureka"}},"instance":{"prefer-ip-address":true}}}'
 
+# [도전] 포트가 열렸는지로 "준비됨"을 판단한다. (JRE 이미지에 curl 이 없어 bash 의 /dev/tcp 를 쓴다)
+x-port-check: &port-check
+  interval: 5s
+  timeout: 3s
+  retries: 30
+  start_period: 10s
+
+# 설정 서버·디스커버리가 "떠 있는" 게 아니라 "준비된" 뒤에 클라이언트를 띄운다
+x-client: &client
+  environment: *client-env
+  depends_on:
+    config-server:
+      condition: service_healthy
+    discovery-server:
+      condition: service_healthy
+
 services:
   config-server:
     build: ./config-server
     ports:
       - "8888:8888"
+    healthcheck:
+      <<: *port-check
+      test: ["CMD-SHELL", "bash -c '</dev/tcp/localhost/8888' || exit 1"]
 
   discovery-server:
     build: ./discovery-server
     ports:
       - "8761:8761"
+    healthcheck:
+      <<: *port-check
+      test: ["CMD-SHELL", "bash -c '</dev/tcp/localhost/8761' || exit 1"]
 
   gateway-server:
+    <<: *client
     build: ./gateway-server
     ports:
       - "8000:8000"
-    environment: *client-env
-    depends_on:
-      - config-server
-      - discovery-server
 
   order-service:
+    <<: *client
     build: ./order-service
     ports:
       - "8080:8080"
-    environment: *client-env
-    depends_on:
-      - config-server
-      - discovery-server
 
   product-service:
+    <<: *client
     build: ./product-service
     ports:
       - "8081:8081"
-    environment: *client-env
-    depends_on:
-      - config-server
-      - discovery-server
 
   payment-service:
+    <<: *client
     build: ./payment-service
     ports:
       - "8082:8082"
-    environment: *client-env
-    depends_on:
-      - config-server
-      - discovery-server
 
-  # 🏋️ 과제: user / seller / cart / settlement 서비스를 같은 방식으로 추가하세요.
+  user-service:
+    <<: *client
+    build: ./user-service
+    ports:
+      - "8083:8083"
+
+  seller-service:
+    <<: *client
+    build: ./seller-service
+    ports:
+      - "8084:8084"
+
+  cart-service:
+    <<: *client
+    build: ./cart-service
+    ports:
+      - "8085:8085"
+
+  settlement-service:
+    <<: *client
+    build: ./settlement-service
+    ports:
+      - "8086:8086"
