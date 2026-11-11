@@ -36,7 +36,7 @@ POST   http://localhost:8080/settlements/batch/restart?runId=1             # 이
 
 ## 📝 과제와의 관계
 
-이 브랜치는 **과제 5 (재시작 시나리오 확장)**의 비교 기준(정답 예시)입니다. 과제 내용은 `lectures/settlement/step3` 브랜치 README를 확인하세요.
+이 브랜치는 **과제 HW05 (재시작 시나리오 확장)**의 비교 기준(정답 예시)입니다. 과제 내용은 `lectures/settlement/step3` 브랜치 README를 확인하세요.
 
 
 다음 수업은 `lectures/settlement/step4`에서 시작합니다.
