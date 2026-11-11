@@ -24,8 +24,6 @@ DDD 완성 코드 위에 **정산 도메인의 출발점**이 세팅돼 있습�
 | 대용량 시더 | `settlement/support/SettlementDataSeeder` | 주문/결제 N건 배치 INSERT |
 | API | `SettlementController` | `POST /settlements/naive[?limit=N]`, `GET /settlements/status`, `DELETE /settlements` |
 
-강사용 상세 진행 가이드: [`SETTLEMENT_SESSION.md`](SETTLEMENT_SESSION.md)
-
 ## 오늘 수업에서 하는 것
 
 - 정산 도메인의 특수성 — **1원의 무결성** (어디서 반올림하고 어디서 나머지를 취하나)
@@ -51,7 +49,7 @@ POST http://localhost:8080/settlements/naive?limit=100000
 POST http://localhost:8080/settlements/naive          # limit 없음 = findAll → OOM
 ```
 
-## 📝 사전 과제 — OOM 직접 재현하기 (마감 11/23 (월) 13:30)
+## 📝 과제 HW04 ③ — OOM 직접 재현하기 (마감 11/23 (월) 13:30)
 
 > 수업 전에 **직접 터뜨려 보고** 오면, 오후의 Chunk 처리가 왜 필요한지 몸으로 이해됩니다.
 
