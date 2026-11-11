@@ -1,0 +1,28 @@
+name: seller-service
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "seller-service/**"
+      - "common/**"
+      - "build.gradle"
+      - "settings.gradle"
+      - ".github/workflows/seller-service.yml"
+      - ".github/workflows/_service-ci.yml"
+  pull_request:
+    paths:
+      - "seller-service/**"
+      - "common/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  ci:
+    uses: ./.github/workflows/_service-ci.yml
+    with:
+      module: seller-service
+    secrets: inherit

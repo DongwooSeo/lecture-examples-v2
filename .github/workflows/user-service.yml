@@ -1,0 +1,28 @@
+name: user-service
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "user-service/**"
+      - "common/**"
+      - "build.gradle"
+      - "settings.gradle"
+      - ".github/workflows/user-service.yml"
+      - ".github/workflows/_service-ci.yml"
+  pull_request:
+    paths:
+      - "user-service/**"
+      - "common/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  ci:
+    uses: ./.github/workflows/_service-ci.yml
+    with:
+      module: user-service
+    secrets: inherit

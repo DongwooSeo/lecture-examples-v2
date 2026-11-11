@@ -1,0 +1,28 @@
+name: gateway-server
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "gateway-server/**"
+      - "common/**"
+      - "build.gradle"
+      - "settings.gradle"
+      - ".github/workflows/gateway-server.yml"
+      - ".github/workflows/_service-ci.yml"
+  pull_request:
+    paths:
+      - "gateway-server/**"
+      - "common/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  ci:
+    uses: ./.github/workflows/_service-ci.yml
+    with:
+      module: gateway-server
+    secrets: inherit

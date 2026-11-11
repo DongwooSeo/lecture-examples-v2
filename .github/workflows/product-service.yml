@@ -1,0 +1,28 @@
+name: product-service
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "product-service/**"
+      - "common/**"
+      - "build.gradle"
+      - "settings.gradle"
+      - ".github/workflows/product-service.yml"
+      - ".github/workflows/_service-ci.yml"
+  pull_request:
+    paths:
+      - "product-service/**"
+      - "common/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  ci:
+    uses: ./.github/workflows/_service-ci.yml
+    with:
+      module: product-service
+    secrets: inherit

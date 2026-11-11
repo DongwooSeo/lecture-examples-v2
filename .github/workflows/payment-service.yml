@@ -1,0 +1,28 @@
+name: payment-service
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "payment-service/**"
+      - "common/**"
+      - "build.gradle"
+      - "settings.gradle"
+      - ".github/workflows/payment-service.yml"
+      - ".github/workflows/_service-ci.yml"
+  pull_request:
+    paths:
+      - "payment-service/**"
+      - "common/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  ci:
+    uses: ./.github/workflows/_service-ci.yml
+    with:
+      module: payment-service
+    secrets: inherit

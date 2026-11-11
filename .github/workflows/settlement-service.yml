@@ -1,0 +1,28 @@
+name: settlement-service
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "settlement-service/**"
+      - "common/**"
+      - "build.gradle"
+      - "settings.gradle"
+      - ".github/workflows/settlement-service.yml"
+      - ".github/workflows/_service-ci.yml"
+  pull_request:
+    paths:
+      - "settlement-service/**"
+      - "common/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  ci:
+    uses: ./.github/workflows/_service-ci.yml
+    with:
+      module: settlement-service
+    secrets: inherit
