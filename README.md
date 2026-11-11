@@ -26,7 +26,7 @@
 4. **4-4** **Partitioning** — 파티션마다 전용 Reader, 파티션별 재시작 보존
 5. 개념 20분: Driving Table, Cursor vs Paging, Bulk Insert, 인덱스 전략
 
-## 📝 과제 6 — 측정 보고서 + 멀티 모듈 예열 (마감 11/25 (수) 13:30)
+## 📝 과제 HW06 — 측정 보고서 + 멀티 모듈 분리 (마감 11/25 (수) 13:30)
 
 **A. 측정 보고서 (필수, 30분)** — `lectures/settlement/step4-done` 기준
 
@@ -34,9 +34,9 @@
 - [ ] elapsedMs와 배속을 한 표에 정리하고, 두 방식의 차이를 3줄로 설명
 - [ ] gridSize를 16으로 올려도 빨라지지 않는다면, 진짜 병목이 무엇인지 추측
 
-**B. 멀티 모듈 분리 (필수, 2시간)** — 내일 MSA 수업의 출발점
+**B. 멀티 모듈 분리 (필수, 2.5시간)** — 내일 MSA 수업의 출발점
 
-- [ ] `lectures/msa/step1` README의 과제를 진행하세요.
+- [ ] 과제 브랜치 `homework/msa-0` 의 README 를 진행하세요. (product · payment · order 3개 서비스를 모듈로 이관)
 
 ### 제출 방법 (공통)
 
