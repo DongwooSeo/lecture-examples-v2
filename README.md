@@ -31,26 +31,13 @@ order/
 └── infrastructure/ ← JPA 구현 (OrderRepositoryAdapter 등)
 ```
 
-## 📝 과제 3 — 나머지 도메인 4계층 + 공통 응답 (마감 11/20 (금) 13:30)
+## 📝 오늘의 과제 (내일 오전)
 
-**필수**
+| 과제 | 마감 | 시작 브랜치 | 검증 |
+| --- | --- | --- | --- |
+| **HW03** 6개 도메인 4계층 + DIP + 공통 응답 | 11/20 (금) 13:30 | `homework/ddd-3` | 브랜치 README 의 완료 기준 |
 
-- [ ] 상품 · 장바구니 · 결제 · 유저 · 셀러를 주문과 같은 4계층 구조로 분리
-- [ ] 각 도메인의 `Repository`는 domain에 인터페이스, infrastructure에 구현 (DIP)
-- [ ] domain 패키지에 `org.springframework.web`, `jakarta.servlet` import가 **0개**
-- [ ] 컨트롤러 공통 응답 `ApiResponse<T>` + `GlobalExceptionHandler`로 에러 응답 형식 통일 (`common/response`, `common/exception`)
-
-**도전**
-
-- [ ] `lectures/ddd/step4-done`의 테스트(`OrderServiceTest`, `OrderControllerTest` 등)를 본인 코드로 가져와 통과시키기
-- [ ] ArchUnit으로 "domain은 infrastructure에 의존하지 않는다" 규칙 테스트 추가
-
-**완료 기준**: `./gradlew test` 통과 + 모든 API가 같은 응답 모양(`success`, `data`, `error`)으로 내려옴
-
-### 제출 방법 (공통)
-
-1. 이 레포를 **fork** 한 뒤, 본인 fork에 `hw/ddd-3` 브랜치를 만들어 작업합니다.
-2. 마감 전까지 **본인 fork의 브랜치 링크**(또는 PR 링크)를 과제 제출 채널에 올립니다.
-3. 다음 날 14:00 수업은 **과제 리뷰 15분**으로 시작합니다. 2~3명의 코드를 `-done` 브랜치와 나란히 비교합니다.
-
-> 막히면 `lectures/ddd/step4-done` 브랜치와 `git diff`로 비교해 봐도 괜찮습니다. 단, **왜 그렇게 바뀌었는지 설명할 수 있어야** 합니다.
+과제 내용 · 완료 기준 · 제출 방법은 **시작 브랜치의 README** 에 있습니다.
+```bash
+git fetch origin && git checkout homework/ddd-3
+```
