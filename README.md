@@ -1,26 +1,46 @@
-# [MSA ③-2] 완성 — order-service 원격 호출을 FeignClient로
+# 📝 과제 HW10 — 10개 서비스 Dockerfile + Compose 로 전체 기동
 
 | 항목 | 내용 |
 | --- | --- |
-| 브랜치 | `lectures/msa/step6-done` (구현 후 · 완성 코드) |
-| 강의일 | Day 7 · 11/26 (목) |
-| 이동 | 이전: `lectures/msa/step6` |
+| 마감 | **12/01 (화) 13:30** |
+| 유형 | 복습 · 예상 2.5시간 |
+| 시작 브랜치 | `homework/infra-1` (이 브랜치) |
+| 정답 예시 | `homework/infra-1-solution` |
+| 이어지는 수업 | Day 9 · CI/CD ① 컨테이너와 쿠버네티스 (11/30) |
 
-> **브랜치 규칙** — `stepN` = 구현 **전** 출발 코드, `stepN-done` = 구현 **후** 완성 코드.
-> 수업은 `stepN`에서 시작하고, 막히면 언제든 `stepN-done`으로 체크아웃해 다음 단계에 합류하세요.
-> ```bash
-> git fetch origin && git checkout lectures/msa/step6-done
-> ```
+## 왜 하나요?
 
-## 이 브랜치에서 달라진 것
+수업에서 `order-service` 를 이미지로 만들고, 인프라 3종 + 서비스 3개를 `docker-compose.yml` 로 띄웠습니다.
+나머지 서비스까지 담으면 **명령어 한 줄로 MSA 전체가 뜨는** 온보딩이 완성됩니다.
 
-- `order-service`: `ProductFeignClient`, `PaymentFeignClient` 추가, 기존 RestClient 설정(`OrderClientConfig`, `ProductHttpClient`) 제거
-- `@EnableFeignClients` 적용 (`OrderServiceApplication`)
+## 할 일
 
-> `cart-service`는 아직 RestClient(`ProductHttpClient`)입니다 — **과제 8**에서 전환합니다.
+**필수**
 
-## 📝 과제와의 관계
+- [ ] `user-service`(8083) · `seller-service`(8084) · `cart-service`(8085) · `settlement-service`(8086) Dockerfile
+- [ ] `docker-compose.yml` 에 4개 서비스 추가 — config-server · Eureka 주소를 **컨테이너 이름**으로 (`x-client-env` 참고)
+- [ ] `./gradlew bootJar && docker compose up -d --build` 후 Gateway(8000) 로 각 서비스 호출 성공
 
-이 브랜치는 **과제 8 (cart-service Feign 전환)**의 비교 기준(정답 예시)입니다. 과제 내용은 `lectures/msa/step6` 브랜치 README를 확인하세요.
+**도전**
 
-> 다음 MSA ④ (Kafka · Saga · Outbox) 브랜치는 준비 중입니다.
+- [ ] `healthcheck` + `depends_on: condition: service_healthy` 로 "떠 있음"이 아니라 "준비됨" 뒤에 클라이언트 기동
+  - JRE 이미지에는 curl 이 없습니다. `bash -c '</dev/tcp/localhost/8888'` 로 포트를 확인해 보세요
+- [ ] YAML 앵커(`&`, `*`, `<<:`)로 서비스 10개의 반복 설정 줄이기
+
+## 완료 기준 — 검증 스크립트
+
+```bash
+./scripts/verify-infra-1.sh          # Dockerfile 10개, compose 서비스 10개 검사
+./scripts/verify-infra-1.sh --run    # 빌드 → 기동 → Gateway 경유 호출까지
+```
+
+## 제출 방법
+
+1. 이 레포를 **fork** 하고, 본인 fork 에서 이 브랜치를 기준으로 `hw/infra-1` 브랜치를 만듭니다.
+   ```bash
+   git fetch upstream && git checkout -b hw/infra-1 upstream/homework/infra-1
+   ```
+2. **마감(12/01 (화) 13:30) 전까지** 본인 fork 의 브랜치(또는 PR) 링크를 과제 제출 채널에 올립니다.
+3. 14:00 수업은 **과제 리뷰 15분**으로 시작합니다. 2~3명의 코드를 정답 브랜치와 나란히 비교합니다.
+
+> 막히면 정답 브랜치 `homework/infra-1-solution` 와 `git diff` 로 비교해 봐도 됩니다. 단, **왜 그렇게 바뀌었는지 설명할 수 있어야** 합니다.
