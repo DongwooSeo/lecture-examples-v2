@@ -49,28 +49,13 @@ curl -X POST "http://localhost:8080/orders?userId=1"   # 첫 주문 성공
 ./gradlew test                                         # OrderRepositoryTests
 ```
 
-## 📝 과제 1 — 나머지 도메인 연관관계 끊기 (마감 11/18 (수) 13:30)
+## 📝 오늘의 과제 (내일 오전)
 
-> 수업에서 `상품 ↔ 주문`을 함께 끊었습니다. 같은 원칙으로 **나머지 경계**를 끊어 오세요.
+| 과제 | 마감 | 시작 브랜치 | 검증 |
+| --- | --- | --- | --- |
+| **HW01** 나머지 도메인 연관관계 끊기 | 11/18 (수) 13:30 | `homework/ddd-1` | 브랜치 README 의 완료 기준 |
 
-**필수**
-
-- [ ] `Cart → User`, `CartItem → Product` 를 ID 참조로 변경
-- [ ] `Seller ↔ User`, `Seller ↔ Product` 양방향 참조 제거 (어느 쪽이 ID를 들고 있어야 하는지 근거와 함께)
-- [ ] `Order → Payment` 를 ID 참조로 변경
-- [ ] `DataInitializer`, `OrderService` 를 바뀐 구조에 맞게 수정해 `bootRun` + 주문 호출이 성공
-- [ ] `./gradlew test` 통과
-
-**도전**
-
-- [ ] 각 경계를 끊으며 "주문 당시 정보 보존(스냅샷)"이 필요한 곳과 필요 없는 곳을 표로 정리
-
-**완료 기준**: 다른 도메인 Entity를 import하는 Entity가 **0개** (`grep -r "import .*\.product\.Product" src/main` 등으로 확인)
-
-### 제출 방법 (공통)
-
-1. 이 레포를 **fork** 한 뒤, 본인 fork에 `hw/ddd-1` 브랜치를 만들어 작업합니다.
-2. 마감 전까지 **본인 fork의 브랜치 링크**(또는 PR 링크)를 과제 제출 채널에 올립니다.
-3. 다음 날 14:00 수업은 **과제 리뷰 15분**으로 시작합니다. 2~3명의 코드를 `-done` 브랜치와 나란히 비교합니다.
-
-> 막히면 `lectures/ddd/step2-done` 브랜치와 `git diff`로 비교해 봐도 괜찮습니다. 단, **왜 그렇게 바뀌었는지 설명할 수 있어야** 합니다.
+과제 내용 · 완료 기준 · 제출 방법은 **시작 브랜치의 README** 에 있습니다.
+```bash
+git fetch origin && git checkout homework/ddd-1
+```
