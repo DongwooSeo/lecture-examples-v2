@@ -36,7 +36,7 @@ curl -X POST localhost:8080/orders/api    -H 'Content-Type: application/json' -d
 
 ## 📝 과제와의 관계
 
-이 브랜치는 **과제 4 개인 파트 (트랜잭션 경계 체감)**의 비교 기준(정답 예시)입니다. 과제 내용은 `lectures/ddd/step5` 브랜치 README를 확인하세요.
+이 브랜치는 **과제 HW04 개인 파트 (트랜잭션 경계 체감)**의 비교 기준(정답 예시)입니다. 과제 내용은 `lectures/ddd/step5` 브랜치 README를 확인하세요.
 
 
 다음 수업은 `lectures/settlement/step1`에서 시작합니다.
