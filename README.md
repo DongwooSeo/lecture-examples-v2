@@ -1,35 +1,57 @@
-# [MSA ②-3] 완성 — Spring Cloud Config로 설정 중앙화
+# 📝 과제 HW07 — Eureka · Config 를 나머지 5개 서비스에
 
 | 항목 | 내용 |
 | --- | --- |
-| 브랜치 | `lectures/msa/step4-done` (구현 후 · 완성 코드) |
-| 강의일 | Day 6 · 11/25 (수) |
-| 이동 | 이전: `lectures/msa/step4` · 다음: `lectures/msa/step5` |
+| 마감 | **11/26 (목) 13:30** |
+| 유형 | 복습 · 예상 2.5시간 |
+| 시작 브랜치 | `homework/msa-1` (이 브랜치) |
+| 정답 예시 | `lectures/msa/step4-done` |
+| 이어지는 수업 | Day 6 · MSA ② Eureka · Gateway · Config (11/25) |
 
-> **브랜치 규칙** — `stepN` = 구현 **전** 출발 코드, `stepN-done` = 구현 **후** 완성 코드.
-> 수업은 `stepN`에서 시작하고, 막히면 언제든 `stepN-done`으로 체크아웃해 다음 단계에 합류하세요.
-> ```bash
-> git fetch origin && git checkout lectures/msa/step4-done
-> ```
+## 왜 하나요?
 
-## 이 브랜치에서 달라진 것
+수업에서는 `order` · `product` 와 인프라 서버 3종(discovery · gateway · config)을 연결했습니다.
+이 브랜치는 **payment · user · seller · cart · settlement 5개 서비스의 연결을 되돌려 둔** 상태입니다 — 아직 하드코딩된 주소로 호출하고, 설정도 로컬 파일에 있습니다.
 
-- `config-server` 모듈 (:8888) — 설정 저장소: [`DongwooSeo/msa-config-repo`](https://github.com/DongwooSeo/msa-config-repo)
-- 모든 서비스의 로컬 설정은 `spring.config.import: optional:configserver:http://localhost:8888`만 남김
-- 포트·라우트·관리 엔드포인트는 config 레포의 `<서비스명>.yml`에서 배달
+## 할 일
 
-## 실행 순서
+**필수**
 
-```bash
-./gradlew :config-server:bootRun      # 1. 설정
-./gradlew :discovery-server:bootRun   # 2. 디스커버리
-./gradlew :gateway-server:bootRun     # 3. 게이트웨이 (:8000)
-./gradlew :order-service:bootRun      # 4. 서비스들
+- [ ] 5개 서비스에 Eureka Client + Config Client 의존성 추가 (`order-service/build.gradle` 참고)
+- [ ] 로컬 설정은 "열쇠"만 남기기 — `application.yml` 에 `spring.application.name`, `spring.config.import: optional:configserver:http://localhost:8888`
+- [ ] `cart-service` 의 상품 호출을 `@LoadBalanced` RestClient + `http://product-service` (이름 기반)로
+- [ ] [`msa-config-repo`](https://github.com/DongwooSeo/msa-config-repo) 를 **본인 계정으로 fork** → `config-server` 의 `uri` 를 본인 fork 로 변경
+- [ ] 본인 config 레포에서 값 하나(예: 로그 레벨)를 바꾸고, 서비스 재시작으로 반영되는 것 확인 (스크린샷)
+
+**도전**
+
+- [ ] `/actuator/refresh` 로 **재시작 없이** 반영 (`@RefreshScope`)
+- [ ] product-service 를 포트 2개로 띄워 Gateway 호출이 번갈아 가는지(로드밸런싱) 확인
+
+## 완료 기준
+
+1. 기동 순서: `config-server` → `discovery-server` → `gateway-server` → 서비스 7개
+2. `http://localhost:8761` 에 **서비스 7개 + gateway = 8개**가 UP
+3. 아래 요청을 모두 Gateway(8000) 경유로 성공시키는 `gateway.http` 작성
+
+```http
+GET  http://localhost:8000/products/1
+GET  http://localhost:8000/users/1
+GET  http://localhost:8000/sellers/1
+GET  http://localhost:8000/users/1/cart
+POST http://localhost:8000/orders
+GET  http://localhost:8000/settlements/status
 ```
 
-## 📝 과제와의 관계
+> 404 가 나면 라우트(config 레포의 `gateway-server.yml`)와 `spring.application.name` 을 먼저 의심합니다.
 
-이 브랜치는 **과제 7 (Spring Cloud 3종 전체 적용)**의 비교 기준(정답 예시)입니다. 과제 내용은 `lectures/msa/step4` 브랜치 README를 확인하세요.
+## 제출 방법
 
+1. 이 레포를 **fork** 하고, 본인 fork 에서 이 브랜치를 기준으로 `hw/msa-1` 브랜치를 만듭니다.
+   ```bash
+   git fetch upstream && git checkout -b hw/msa-1 upstream/homework/msa-1
+   ```
+2. **마감(11/26 (목) 13:30) 전까지** 본인 fork 의 브랜치(또는 PR) 링크를 과제 제출 채널에 올립니다.
+3. 14:00 수업은 **과제 리뷰 15분**으로 시작합니다. 2~3명의 코드를 정답 브랜치와 나란히 비교합니다.
 
-다음 수업은 `lectures/msa/step5`에서 시작합니다.
+> 막히면 정답 브랜치 `lectures/msa/step4-done` 와 `git diff` 로 비교해 봐도 됩니다. 단, **왜 그렇게 바뀌었는지 설명할 수 있어야** 합니다.
