@@ -22,7 +22,7 @@
 | 3 | `lectures/msa/step3` | API Gateway (Spring Cloud Gateway) |
 | 4 | `lectures/msa/step4` | 중앙 설정 관리 (Spring Cloud Config) |
 
-수업에서는 **order · product**에 먼저 적용하고, 나머지 서비스는 과제 7로 이어집니다.
+수업에서는 **order · product**에 먼저 적용하고, 나머지 서비스는 과제 HW07 (`homework/msa-1`)로 이어집니다.
 
 ## 이 브랜치는?
 
