@@ -39,7 +39,7 @@
 
 ## 📝 과제와의 관계
 
-이 브랜치는 **과제 6-A (측정 보고서)**의 비교 기준(정답 예시)입니다. 과제 내용은 `lectures/settlement/step4` 브랜치 README를 확인하세요.
+이 브랜치는 **과제 HW06-A (측정 보고서)**의 비교 기준(정답 예시)입니다. 과제 내용은 `lectures/settlement/step4` 브랜치 README를 확인하세요.
 
 
 다음 수업은 `lectures/msa/step1`에서 시작합니다.
