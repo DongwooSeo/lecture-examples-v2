@@ -8,22 +8,29 @@
 
 ## 📅 브랜치 로드맵
 
-| 강의일 | 과목 | 브랜치 | 다음 날 오전 과제 |
+| 강의일 | 과목 | 수업 브랜치 | 다음 날 오전 과제 (시작 브랜치) |
 | --- | --- | --- | --- |
-| 11/17 (화) | DDD ① 전략적 설계 | `lectures/ddd/step2` | 나머지 도메인 연관관계 끊기 |
-| 11/18 (수) | DDD ② 전술적 설계 | `lectures/ddd/step3` | 장바구니 애그리거트 불변식 + 단위 테스트 |
-| 11/19 (목) | DDD ③ 4계층 · 도메인 간 소통 | `lectures/ddd/step4`, `lectures/ddd/step5` | 나머지 도메인 4계층 + 공통 응답 / (주말) 팀 컨텍스트 맵 |
-| 11/23 (월) | 정산 ① 왜 배치인가 · Chunk · 재시작 | `lectures/settlement/step1` ~ `step3` | 70% 실패 재시작 테스트 + chunk 크기 측정 |
-| 11/24 (화) | 정산 ② 멀티스레드 함정 · Partitioning | `lectures/settlement/step4` | 측정표 + **멀티 모듈 분리 (`lectures/msa/step1`)** |
-| 11/25 (수) | MSA ② Eureka · Gateway · Config | `lectures/msa/step2` ~ `step4` | 3종을 7개 서비스 전체에 적용 |
-| 11/26 (목) | MSA ③ Resilience4j · OpenFeign | `lectures/msa/step5`, `lectures/msa/step6` | cart-service Feign 전환 + 실패 3케이스 재현 |
-| 11/27 (금) | MSA ④ Kafka · Saga · Outbox | _(브랜치 준비 중)_ | (주말) 주문↔결제 Saga |
-| 11/30 ~ 12/01 | 쿠버네티스 기반 CI/CD | _(브랜치 준비 중)_ | Dockerfile · Compose · CI |
-| 12/02 (수) | 검색 ② Elasticsearch | `lectures/elasticsearch/step1` | 검색 챌린지 [기본] / (주말) Outbox |
-| 12/07 (월) | AI ② 검색 파이프라인에 AI 통합 | `lectures/ai/step1` | 검증 세트 비교표 + RAG 질문 준비 |
-| 12/08 ~ 12/10 | AI ③④ RAG · SSE · LLM 운영 | _(브랜치 준비 중)_ | — |
+| 11/17 (화) | DDD ① 전략적 설계 | `lectures/ddd/step2` | HW01 연관관계 끊기 (`homework/ddd-1`) |
+| 11/18 (수) | DDD ② 전술적 설계 | `lectures/ddd/step3` | HW02 장바구니 애그리거트 (`homework/ddd-2`) |
+| 11/19 (목) | DDD ③ 4계층 · 도메인 간 소통 | `lectures/ddd/step4`, `step5` | HW03 4계층 + 공통 응답 (`homework/ddd-3`) |
+| 11/20 (금) | [특강] 프로젝트 구조 설계 | — | HW04 (주말) 팀 컨텍스트 맵 + OOM 예열 (`ddd/step5` README) |
+| 11/23 (월) | 정산 ① 배치 · Chunk · 재시작 | `lectures/settlement/step1` ~ `step3` | HW05 재시작 테스트 + chunk 측정 (`settlement/step3` README) |
+| 11/24 (화) | 정산 ② Partitioning / MSA ① | `lectures/settlement/step4`, `lectures/msa/step1` | HW06 측정표 + 멀티 모듈 (`homework/msa-0`) |
+| 11/25 (수) | MSA ② Eureka · Gateway · Config | `lectures/msa/step2` ~ `step4` | HW07 나머지 서비스 연결 (`homework/msa-1`) |
+| 11/26 (목) | MSA ③ Resilience4j · OpenFeign | `lectures/msa/step5`, `step6` | HW08 cart Feign + 실패 재현 (`homework/msa-2`) |
+| 11/27 (금) | MSA ④ Kafka · Saga · Outbox | `lectures/msa/step6-done` 위에서 | HW09 ⭐ (주말) Saga (`homework/msa-saga`) |
+| 11/30 (월) | CI/CD ① 컨테이너 · 쿠버네티스 | `lectures/infra/step1` | HW10 Dockerfile + Compose (`homework/infra-1`) |
+| 12/01 (화) | CI/CD ② GitHub Actions / 검색 ① | `lectures/infra/step2` | HW11 전 서비스 CI (`homework/infra-2`) |
+| 12/02 (수) | 검색 ② Elasticsearch | `lectures/elasticsearch/step1` | HW12 검색 챌린지 · HW14 ⭐ Outbox (`homework/search-outbox`) |
+| 12/03 (목) | 검색 ③ / AI ① Spring AI | `lectures/elasticsearch/step1-done` | — (12/04 오후 평가 1회차) |
+| 12/07 (월) | AI ② 검색에 AI 통합 | `lectures/ai/step1` | HW15 검색 비교 보고서 (`ai/step1-done` README) |
+| 12/08 (화) | AI ③ RAG · SSE | `lectures/ai/step2` | HW16 (선택) · HW17 근거 상품 (`homework/ai-2`) |
+| 12/10 (목) | AI ④ LLM 운영 / 세미 프로젝트 킥오프 | — | — |
 
-> 정산 브랜치는 DDD 완성 코드 위에, MSA 브랜치는 정산 완성 코드 위에, 검색·AI 브랜치는 MSA 완성 코드 위에 이어집니다.
+> 과제 브랜치 `homework/<id>` 에는 과제 README 와 **검증 테스트**(시작할 때는 실패, 다 하면 통과)가 들어 있습니다.
+> 정답 예시는 기존 `-done` 브랜치 또는 `homework/<id>-solution` 브랜치입니다.
+
+> 정산 브랜치는 DDD 완성 코드 위에, MSA 브랜치는 정산 완성 코드 위에, 배포·검색·AI 브랜치는 MSA 완성 코드 위에 이어집니다.
 > 즉 **하나의 프로젝트가 끝까지 자라는 구조**입니다.
 
 ## 🛠 공통 실행 환경
@@ -31,11 +38,12 @@
 - JDK 21+, Gradle Wrapper 포함 (`./gradlew`)
 - DB: 인메모리 H2 (모놀리식 단계) — H2 콘솔 `http://localhost:8080/h2-console`
 - MSA 이후: 서비스별 포트 (order 8080 · product 8081 · payment 8082 · user 8083 · seller 8084 · cart 8085 · settlement 8086 · gateway 8000 · discovery 8761 · config 8888)
-- 검색·AI 이후: Docker Desktop, Ollama (네이티브 설치)
+- 배포 이후: Docker Desktop, 로컬 쿠버네티스 / 검색·AI 이후: Ollama (네이티브 설치)
+- AI ③ 이후: concierge 8087
 
 ---
 
-# 📝 [Day 1 사전 과제] 도메인 분석 과제 (마감 11/17 (화) 14:00)
+# 📝 과제 HW00 — [Day 1 사전 과제] 도메인 분석 (마감 11/17 (화) 14:00)
 
 > Day 1 DDD 강의에 앞서, **앞으로 고도화해 나갈 프로젝트의 도메인을 직접 분석**해보는 사전 과제입니다. 
 > 이 과제의 목적은 정답을 맞히는 것이 아니라, 현재 코드가 어떤 방식으로 서로 얽혀 있는지 스스로 파악하고 체감해보는 것입니다. 
