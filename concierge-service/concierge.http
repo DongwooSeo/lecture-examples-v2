@@ -1,0 +1,9 @@
+### 한 번에 받기 (느리다 — 생성이 끝날 때까지 대기)
+POST http://localhost:8087/concierge/ask
+Content-Type: application/json
+
+{"question": "결혼식 하객으로 입을 10만원대 원피스 추천해줘"}
+
+### 스트리밍 (SSE) — 터미널에서: curl -N "http://localhost:8087/concierge/stream?question=..."
+GET http://localhost:8087/concierge/stream?question=비 오는 날 신기 좋은 신발 있어?
+Accept: text/event-stream

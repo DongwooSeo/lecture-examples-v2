@@ -1,0 +1,18 @@
+server:
+  port: 8087
+
+spring:
+  application:
+    name: concierge-service
+  ai:
+    retry:
+      max-attempts: 1
+    ollama:
+      base-url: http://localhost:11434
+      chat:
+        model: exaone3.5:2.4b
+        temperature: 0.3        # 답변 문장은 약간의 자연스러움 허용 (색인 파이프라인은 0.0 이었다)
+
+concierge:
+  product-base-url: http://localhost:8081   # product-service (하이브리드 검색 API)
+  top-k: 5                                  # LLM 에게 근거로 넘길 상품 수
