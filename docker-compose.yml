@@ -1,0 +1,62 @@
+# MSA 전체를 "파일 하나"로 띄운다.
+#
+#   ./gradlew bootJar          # 모든 모듈 jar 빌드
+#   docker compose up -d --build
+#   curl http://localhost:8000/products/1   # Gateway 경유
+#
+# 컨테이너 안에서 localhost 는 "자기 자신"이다.
+# 그래서 config-server / Eureka 주소를 서비스 이름(= compose 의 호스트 이름)으로 바꿔 준다.
+
+x-client-env: &client-env
+  SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
+  # config-repo 의 Eureka 주소(localhost:8761)를 덮어쓴다. SPRING_APPLICATION_JSON 은 원격 설정보다 우선한다.
+  SPRING_APPLICATION_JSON: '{"eureka":{"client":{"service-url":{"defaultZone":"http://discovery-server:8761/eureka"}},"instance":{"prefer-ip-address":true}}}'
+
+services:
+  config-server:
+    build: ./config-server
+    ports:
+      - "8888:8888"
+
+  discovery-server:
+    build: ./discovery-server
+    ports:
+      - "8761:8761"
+
+  gateway-server:
+    build: ./gateway-server
+    ports:
+      - "8000:8000"
+    environment: *client-env
+    depends_on:
+      - config-server
+      - discovery-server
+
+  order-service:
+    build: ./order-service
+    ports:
+      - "8080:8080"
+    environment: *client-env
+    depends_on:
+      - config-server
+      - discovery-server
+
+  product-service:
+    build: ./product-service
+    ports:
+      - "8081:8081"
+    environment: *client-env
+    depends_on:
+      - config-server
+      - discovery-server
+
+  payment-service:
+    build: ./payment-service
+    ports:
+      - "8082:8082"
+    environment: *client-env
+    depends_on:
+      - config-server
+      - discovery-server
+
+  # 🏋️ 과제: user / seller / cart / settlement 서비스를 같은 방식으로 추가하세요.
