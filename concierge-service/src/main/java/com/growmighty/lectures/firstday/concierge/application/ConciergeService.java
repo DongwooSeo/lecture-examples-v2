@@ -34,24 +34,33 @@ public class ConciergeService {
         this.searchClient = searchClient;
     }
 
-    /** 한 번에 받는 답변 — 생성이 끝날 때까지 기다린다 (데모: 504 와 비교용) */
+    /** R — 질문과 관련된 상품(근거)을 가져온다 */
+    public Mono<List<CandidateProduct>> retrieve(String question) {
+        return searchClient.searchCandidates(question);
+    }
+
+    /** 한 번에 받는 답변 — 생성이 끝날 때까지 기다린다. 근거 상품(sources)을 함께 돌려준다 */
     public Mono<ConciergeAnswer> ask(String question) {
-        return searchClient.searchCandidates(question)
+        return retrieve(question)
                 .flatMap(candidates -> Mono.fromCallable(() -> chatClient.prompt()
                                 .user(userPrompt(question, candidates))
                                 .call()
                                 .content())
-                        .subscribeOn(Schedulers.boundedElastic()))   // 블로킹 호출은 이벤트 루프 밖에서
-                .map(answer -> new ConciergeAnswer(question, answer));
+                        .subscribeOn(Schedulers.boundedElastic())   // 블로킹 호출은 이벤트 루프 밖에서
+                        .map(answer -> new ConciergeAnswer(question, answer, ConciergeAnswer.sourcesOf(candidates))));
     }
 
-    /** 토큰 단위 스트리밍 — 첫 글자가 바로 도착한다 */
+    /** 토큰 단위 스트리밍 — 근거를 이미 가져온 경우 */
+    public Flux<String> generate(String question, List<CandidateProduct> candidates) {
+        return chatClient.prompt()
+                .user(userPrompt(question, candidates))
+                .stream()
+                .content();
+    }
+
+    /** 토큰 단위 스트리밍 — 검색부터 한 번에 */
     public Flux<String> stream(String question) {
-        return searchClient.searchCandidates(question)
-                .flatMapMany(candidates -> chatClient.prompt()
-                        .user(userPrompt(question, candidates))
-                        .stream()
-                        .content());
+        return retrieve(question).flatMapMany(candidates -> generate(question, candidates));
     }
 
     static String userPrompt(String question, List<CandidateProduct> candidates) {
