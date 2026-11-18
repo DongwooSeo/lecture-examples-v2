@@ -17,7 +17,7 @@
 
 **필수**
 
-- [ ] `Cart.user`, `CartItem.product` → `userId`, `productId` (Long)
+- [x] `Cart.user`, `CartItem.product` → `userId`, `productId` (Long)
 - [ ] `Seller.user`, `Seller.products` ↔ `Product.seller` 양방향 참조 제거 — 어느 쪽이 ID 를 들고 있어야 하는지 근거와 함께
 - [ ] `Order.user`, `Order.payment` → `userId`, `paymentId`
 - [ ] `OrderItem.product` → `productId` + **주문 당시 상품명·가격 스냅샷** (수업에서 함께 한 부분 — 본인 코드로 이어서 해도 됩니다)

@@ -55,14 +55,14 @@ public class OrderService {
             totalAmount = totalAmount.add(lineAmount);
         }
 
-        Order order = Order.create(user, orderItems);
+        Order order = Order.create(userId, orderItems);
         order.setTotalAmount(totalAmount);
 
         Payment payment = Payment.ready(totalAmount);
         payment.setStatus(PaymentStatus.PAID);
         paymentRepository.save(payment);
 
-        order.assignPayment(payment);
+        order.assignPayment(paymentId);
         order.setStatus(OrderStatus.PAID);
 
         Order saved = orderRepository.save(order);

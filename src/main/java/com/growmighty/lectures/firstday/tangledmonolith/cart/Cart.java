@@ -21,13 +21,14 @@ public class Cart {
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> items = new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id")
+//    private User user;
+    private Long userId; // 이전에는 User 클래스에서 직접 참조했다면, Cart 클래스에서는 사용자 Id만 따로 저장하기 위해
 
-    public static Cart create(User user) {
+    public static Cart create(Long userId) {
         Cart cart = new Cart();
-        cart.user = user;
+        cart.userId = userId;
         return cart;
     }
 
