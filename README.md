@@ -18,10 +18,10 @@
 **필수**
 
 - [x] `Cart.user`, `CartItem.product` → `userId`, `productId` (Long)
-- [ ] `Seller.user`, `Seller.products` ↔ `Product.seller` 양방향 참조 제거 — 어느 쪽이 ID 를 들고 있어야 하는지 근거와 함께
-- [ ] `Order.user`, `Order.payment` → `userId`, `paymentId`
-- [ ] `OrderItem.product` → `productId` + **주문 당시 상품명·가격 스냅샷** (수업에서 함께 한 부분 — 본인 코드로 이어서 해도 됩니다)
-- [ ] `DataInitializer`, `OrderService` 를 바뀐 구조에 맞게 고쳐 `./gradlew bootRun` 후 주문이 성공
+- [x] `Seller.user`, `Seller.products` ↔ `Product.seller` 양방향 참조 제거 — 어느 쪽이 ID 를 들고 있어야 하는지 근거와 함께
+- [x] `Order.user`, `Order.payment` → `userId`, `paymentId`
+- [x] `OrderItem.product` → `productId` + **주문 당시 상품명·가격 스냅샷** (수업에서 함께 한 부분 — 본인 코드로 이어서 해도 됩니다)
+- [x] `DataInitializer`, `OrderService` 를 바뀐 구조에 맞게 고쳐 `./gradlew bootRun` 후 주문이 성공
 
 **도전**
 

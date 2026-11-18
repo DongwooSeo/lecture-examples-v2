@@ -51,7 +51,7 @@ public class OrderService {
             OrderItem orderItem = OrderItem.create(product, quantity);
             orderItems.add(orderItem);
 
-            BigDecimal lineAmount = product.getPrice().multiply(BigDecimal.valueOf(quantity));
+            BigDecimal lineAmount = orderItem.getUnitPrice().multiply(BigDecimal.valueOf(quantity)); // 주문 항목에 보관한 가격과 수량으로 계산하도록주문 항목에 보관한 가격과 수량으로 계산하도록
             totalAmount = totalAmount.add(lineAmount);
         }
 
@@ -62,7 +62,7 @@ public class OrderService {
         payment.setStatus(PaymentStatus.PAID);
         paymentRepository.save(payment);
 
-        order.assignPayment(paymentId);
+        order.assignPayment(payment.getId());
         order.setStatus(OrderStatus.PAID);
 
         Order saved = orderRepository.save(order);
