@@ -1,32 +1,28 @@
 package com.growmighty.lectures.firstday.tangledmonolith.seller;
 
-import com.growmighty.lectures.firstday.tangledmonolith.product.Product;
-import com.growmighty.lectures.firstday.tangledmonolith.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "sellers")
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Seller {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "seller")
-    private List<Product> products = new ArrayList<>();
+    @Column(nullable = false)
+    private Long userId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    // Seller가 물건을 팔고 있지 않거나, 여러 개를 팔고 있을 수 있음
+    // List 형태로 Product를 저장하는 대신 Product 측에서 참조하도록 설정
 
-    public static Seller create(User user) {
+    public static Seller create(Long userId) {
         Seller seller = new Seller();
-        seller.user = user;
+        seller.userId = userId;
         
         return seller;
     }

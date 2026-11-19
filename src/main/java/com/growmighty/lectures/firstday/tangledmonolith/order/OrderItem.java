@@ -1,10 +1,11 @@
 package com.growmighty.lectures.firstday.tangledmonolith.order;
 
-import com.growmighty.lectures.firstday.tangledmonolith.product.Product;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "order_items")
@@ -19,16 +20,25 @@ public class OrderItem {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
+    // 주문 후 할인, 가격 인하 등으로 판매중인 제품 가격은 변할 수 있으나
+    // 사용자의 결제는 되돌릴 수 없으므로 스냅샷으로 조회 필요
+    @Column (nullable = false)
+    private Long productId;
+
+    @Column (nullable = false)
+    private String productName;
+
+    @Column (nullable = false)
+    private BigDecimal productPrice;
 
     @Column(nullable = false)
     private Integer quantity;
 
-    public static OrderItem create(Product product, int quantity) {
+    public static OrderItem create(Long productId, String productName, BigDecimal productPrice, int quantity) {
         OrderItem orderItem = new OrderItem();
-        orderItem.product = product;
+        orderItem.productId = productId;
+        orderItem.productName = productName;
+        orderItem.productPrice = productPrice;
         orderItem.quantity = quantity;
 
         return orderItem;
