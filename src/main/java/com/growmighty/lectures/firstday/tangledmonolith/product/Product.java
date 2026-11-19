@@ -42,6 +42,9 @@ public class Product {
     }
 
     public void decreaseStock(int quantity) {
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("0 이하의 수량이 입력됐습니다.");
+        }
         if (this.stockQuantity < quantity) {
             throw new IllegalStateException("재고가 부족합니다. product=" + this.name);
         }
