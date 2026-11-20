@@ -42,10 +42,18 @@ public class Product {
     }
 
     public void decreaseStock(int quantity) {
+
+        // 차감 수량 -1 이상만 허용
+        if(quantity <= 0) {
+            throw new IllegalArgumentException("차감 수량은 1 이상이어야 합니다.");
+        }
+
+        // 재고 부족 확인
         if (this.stockQuantity < quantity) {
             throw new IllegalStateException("재고가 부족합니다. product=" + this.name);
         }
 
+        // 재고 차감
         this.stockQuantity = (this.stockQuantity - quantity);
     }
 }

@@ -28,11 +28,22 @@ public class CartItem {
     public static CartItem create(Long productId, int quantity) {
         CartItem cartItem = new CartItem();
         cartItem.productId = productId;
-        cartItem.quantity = quantity;
+        //cartItem.quantity = quantity;
+        cartItem.changeQuantity(quantity); // 수량규칙 적용
         return cartItem;
     }
 
     void assignCart(Cart cart) {
         this.cart = cart;
+    }
+
+    // 수량을 변경하는 메서드가 없음.
+    void changeQuantity(int quantity) {
+        if(quantity < 1) {
+            throw new IllegalArgumentException(
+                    "상품 수량은 1 이상이어야 합니다."
+            );
+        }
+        this.quantity = quantity;
     }
 }
