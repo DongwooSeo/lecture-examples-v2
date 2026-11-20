@@ -31,6 +31,7 @@ public class Product {
     @Lob
     private String description;
 
+    /** create - 상품 생성 */
     public static Product create(Long sellerId, String name, BigDecimal price, Integer stockQuantity, String description) {
         Product product = new Product();
         product.sellerId = sellerId;
@@ -41,6 +42,7 @@ public class Product {
         return product;
     }
 
+    /** decreaseStock - 재고 차감 */
     public void decreaseStock(int quantity) {
         if (quantity <= 0) {
             throw new IllegalArgumentException("0 이하의 수량이 입력됐습니다.");
