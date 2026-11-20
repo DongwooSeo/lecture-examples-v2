@@ -61,27 +61,17 @@ public class Cart {
     /** changeQuantity - 수량 변경 */
     public void changeQuantity(Long productId, int newQuantity) {
         // 카트에 존재하는 상품인지 확인
-        CartItem existing = findItem(productId);
-        // 존재하지 않으면 Exception
-        if (existing == null) {
-            throw new IllegalArgumentException("장바구니에 존재하지 않는 상품입니다.");
-        } else {
-            // 존재하면
-            existing.changeQuantity(newQuantity);
-        }
+        CartItem existing = checkExisting(productId);
+        // 존재하면 변경
+        existing.changeQuantity(newQuantity);
     }
     
     /** removeItem - 해당 item 지우기 */
     public void removeItem(Long productId) {
         // 카트에 존재하는 상품인지 확인
-        CartItem existing = findItem(productId);
-        // 존재하지 않으면 Exception
-        if (existing == null) {
-            throw new IllegalArgumentException("장바구니에 존재하지 않는 상품입니다.");
-        } else {
-            // 존재하면 지우기
-            items.remove(existing);
-        }
+        CartItem existing = checkExisting(productId);
+        // 존재하면 지우기
+        items.remove(existing);
     }
 
     /** clear - 카트 전체 비우기 */
@@ -97,5 +87,15 @@ public class Cart {
             }
         }
         return null;
+    }
+
+    /** checkExisting - 카트에 해당 item이 있으면 item, 없으면 null 반환 */
+    private CartItem checkExisting(Long productId) {
+        CartItem existing = findItem(productId);
+        // 존재하지 않으면 Exception
+        if (existing == null) {
+            throw new IllegalArgumentException("장바구니에 존재하지 않는 상품입니다.");
+        }
+        return existing;
     }
 }
