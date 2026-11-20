@@ -89,7 +89,7 @@ public class Cart {
         return null;
     }
 
-    /** checkExisting - 카트에 해당 item이 있으면 item, 없으면 null 반환 */
+    /** checkExisting - 카트에 해당 item이 있으면 item, 없으면 예외 발생 */
     private CartItem checkExisting(Long productId) {
         CartItem existing = findItem(productId);
         // 존재하지 않으면 Exception
