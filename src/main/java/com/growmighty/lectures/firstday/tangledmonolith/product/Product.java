@@ -45,6 +45,8 @@ public class Product {
         if (this.stockQuantity < quantity) {
             throw new IllegalStateException("재고가 부족합니다. product=" + this.name);
         }
+        if (quantity <= 0)
+            throw new IllegalArgumentException("변경할 수 없는 수량입니다");
 
         this.stockQuantity = (this.stockQuantity - quantity);
     }
